@@ -1,0 +1,110 @@
+#-------------------------------------------------------------------------
+[EASY] 643. MaxAverage //////////////////////////////////////////////////
+#-----Brute Force---------------------------------------------------------
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        # # both global and local variables are set 
+        # # to sum of elements in sub-array (k)
+        Sum = 0
+        for i in range(k):
+            Sum += nums[i]
+        maxSum = Sum
+        # keeps track of beginning of sliding window
+        i = 0
+        # keeps track of element RIGHT after end of sliding window
+        # (k+1)th element = (k)th index
+        j = k
+        # slide window as long as array has elements
+        while j < len(nums):
+            # delete first element of window
+            Sum -= nums[i]
+            # add element right AFTER window
+            Sum += nums[j]
+            # check sum
+            maxSum = max(maxSum, Sum)
+            # move window and index counter by 1
+            i += 1
+            j += 1
+        # return average
+        return maxSum/k
+
+
+
+# -------2nd Most efficient-------------------------------------------
+# Replace line 5-8 with below:
+
+# both global and local variables are set 
+# to sum of elements in sub-array (k)
+
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        # # both global and local variables are set 
+        # # to sum of elements in sub-array (k)
+	maxSum = Sum = sum(nums[:k])
+        # keeps track of beginning of sliding window
+        i = 0
+        # keeps track of element RIGHT after end of sliding window
+        # (k+1)th element = (k)th index
+        j = k
+        # slide window as long as array has elements
+        while j < len(nums):
+            # delete first element of window
+            Sum -= nums[i]
+            # add element right AFTER window
+            Sum += nums[j]
+            # check sum
+            maxSum = max(maxSum, Sum)
+            # move window and index counter by 1
+            i += 1
+            j += 1
+        # return average
+        return maxSum/k
+# -------------------------------------------------------------------
+
+
+# ----------------MOST efficient-------------------------------------
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        globalMax = localMax = sum(nums[:k])
+
+        for i in range(1,len(nums)-k+1):            
+            localMax = localMax - nums[i-1] + nums[i+k-1]
+            globalMax = max(localMax, globalMax)
+        return globalMax/k
+
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+[MEDIUM] 3. Longest Substring Without Repeating Characters //////////////
+-------------------------------------------------------------------------
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # i need a left counter that:
+        # take care of left margin of window
+        # increments by one if element being deleted
+        # stays the ame if new unique element added
+        left = 0
+        # counts maximum substring length
+        count = 0
+        # need to create/initialise a unique set tha doesn't add duplicates
+        unique = set()
+        # right counter:
+        # right margin of window
+        # since window isn't of constant size,
+        # always increments to 1
+        # also loop variable that checks if any
+        # elements in array are left to be checked against
+        #  loop for moving window through the string
+        for right in range(len(s)):
+            # innner loop opens only if repeat character found:
+            while s[right] in unique:
+                # remove leftmost character
+                unique.remove(s[left])
+                # increase left margin by 1
+                left += 1
+            # add non-repeated charcter to set
+            unique.add(s[right])
+            # store largest count: between global max and current non-repeated string length
+            count = max(count, right - left + 1)
+        # return whatever is the longest unique substring length
+        return count
+--------------------------------------------------------------------------
