@@ -1,0 +1,65 @@
+def non_alpha(letter):
+    if ('A' <= letter <= 'Z') or ('a' <= letter <= 'z'):
+        return False
+    else:
+        return True
+        
+def space(letter):
+    if letter == ' ':
+        return True
+    else:
+        return False
+        
+
+
+def solution(input_string):
+    # TODO: Implement the function to check whether the provided string is a palindrome or not.
+    '''
+    1. reverse string and check character by character
+    '''
+    
+    solutions = ""
+    solutions_rev = ""
+    for i in range(0, len(input_string)):
+        if (space(input_string[i])) or (non_alpha(input_string[i])): 
+            pass
+        else:
+            solutions += input_string[i].lower()
+            
+    for i in range(len(input_string)-1, -1, -1):
+        if (space(input_string[i])) or (non_alpha(input_string[i])): 
+            pass
+        else:
+            solutions_rev += input_string[i].lower()
+               
+       
+    for j in range(0, len(solutions)):
+        if (solutions[j] is not solutions_rev[j]):
+            return False
+       
+    return True   
+
+
+
+COSMO SOLUTION/////////////////////////////////
+
+def non_alpha(letter):
+    return not ('A' <= letter <= 'Z' or 'a' <= letter <= 'z' or '0' <= letter <= '9')
+
+def solution(input_string):
+    filtered_string = ""
+    
+    # Create a filtered string with only alphanumeric characters in lowercase
+    for char in input_string:
+        if not non_alpha(char):
+            filtered_string += char.lower()
+    
+    # Compare the filtered string with its reverse
+    left, right = 0, len(filtered_string) - 1
+    while left < right:
+        if filtered_string[left] != filtered_string[right]:
+            return False
+        left += 1
+        right -= 1
+    
+    return True 
